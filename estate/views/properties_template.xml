@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Added Properties menu on the website -->
+    <record id="property_menu" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties/</field>
+        <field name="parent_id" ref="website.main_menu" />
+        <field name="sequence" type="int">80</field>
+    </record>
+
+    <template id="property_details">
+        <t t-call="website.layout">
+            <t t-set="title">Properties</t>
+            <div class="oe_structure">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <h3>Details</h3>
+                                    </h5>
+                                    <p class="card-text">
+                                        <strong>Description:</strong>
+                                        <t t-esc="property.description" />
+                                    </p>
+                                    <p>
+                                        <strong>Price:</strong>
+                                        <t t-esc="property.selling_price" />
+                                    </p>
+                                    <p>
+                                        <strong>Living Area:</strong>
+                                        <t t-esc="property.living_area" />
+                                    </p>
+                                    <p>
+                                        <strong>Bedrooms:</strong>
+                                        <t t-esc="property.bedrooms" />
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <h1 class="text-center mb-0">
+                                    <t t-esc="property.name" />
+                                </h1>
+                                <img
+                                    class="card-img-top"
+                                    style="object-fit: cover; height: 100%;"
+                                    t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'"
+                                    alt="Property Image"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="property_template" name="Template">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 d-flex justify-content-start">
+                        <h1>Properties</h1> 
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-end align-items-center">
+                        <ul class="pager">
+                            <a t-if="pager['prev_page']"
+                                t-att-href="'/properties?page=' + str(pager['prev_page'])"
+                                class="btn btn-sm btn-primary mr-2">prev</a>
+                            <a t-if="pager['next_page']"
+                                t-att-href="'/properties?page=' + str(pager['next_page'])"
+                                class="btn btn-sm btn-primary mr-2">next</a>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Added Date picker -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <form action="/properties" method="get">
+                            <div class="input-group">
+                                <input type="date" class="form-control" name="list_after_date" />
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-primary">Listed After</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <img class="card-img-top img-fluid"
+                                        style="height: 200px; object-fit: cover;"
+                                        t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'"
+                                        alt="Property Image" />
+                                    <h5 class="card-title">
+                                        <a t-attf-href="/estate/{{ slug(property) }}">
+                                            <t t-esc="property.name" />
+                                        </a>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

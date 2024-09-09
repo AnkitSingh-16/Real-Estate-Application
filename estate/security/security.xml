@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="implied_ids" eval="[(6, 0,[ref('estate.estate_group_user')])]"/>
+    </record>
+
+    <record id="access_estate_property_manager" model="ir.model.access">
+        <field name="name">Manager: all properties</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="group_id" ref="estate.estate_group_manager"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="access_estate_property_type_manager" model="ir.model.access">
+        <field name="name">Manager: all properties</field>
+        <field name="model_id" ref="model_estate_property_type"/>
+        <field name="group_id" ref="estate.estate_group_manager"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="access_estate_property_tag_manager" model="ir.model.access">
+        <field name="name">Manager: all properties</field>
+        <field name="model_id" ref="model_estate_property_tag"/>
+        <field name="group_id" ref="estate.estate_group_manager"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="estate_property_multi_company_rule" model="ir.rule">
+        <field name="name">Estate Property Multi Company Rule</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="perm_read" eval="False"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+    </record>
+</odoo>
